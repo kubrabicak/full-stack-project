@@ -2,6 +2,8 @@ package com.project.ums.user.controller;
 
 import com.project.ums.user.model.User;
 import com.project.ums.user.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +31,21 @@ public class UserController {
 
     // Get All Users
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers(HttpServletResponse response) {
         List<User> users = userService.getAllUsers();
+
+        // Get the total user count
+        long totalUsers = userService.getTotalUsersCount();
+
+        // Create the cookie with total user count
+        Cookie userCookie = new Cookie("RABO_USERS", String.valueOf(totalUsers));
+        userCookie.setHttpOnly(false); // Allow access to the cookie by the frontend
+        userCookie.setPath("/"); // Cookie is available for the entire domain
+        userCookie.setMaxAge(24 * 60 * 60); // 1 day expiry
+
+        // Add the cookie to the response
+        response.addCookie(userCookie);
+
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 

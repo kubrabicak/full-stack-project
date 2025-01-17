@@ -16,6 +16,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public long getTotalUsersCount() {
+        return userRepository.count();
+    }
+
     // Create User
     public User createUser(User user) {
         return userRepository.save(user);

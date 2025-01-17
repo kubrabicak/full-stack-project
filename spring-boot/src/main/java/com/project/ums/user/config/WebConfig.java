@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")  // Allow Angular frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // HTTP methods
                 .allowedHeaders("*")  // Allow all headers
-                .allowCredentials(true);  // Allow cookies if needed
+                .allowCredentials(false);  // Allow cookies if needed
     }
 }
 

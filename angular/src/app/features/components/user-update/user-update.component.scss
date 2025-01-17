@@ -1,0 +1,10 @@
+mat-form-field {
+  width: 100%;  // Ensure full width for each form field
+  margin-bottom: 16px;  // Add space between form fields
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;  // Align buttons to the right
+  margin-top: 16px;  // Add space above the action buttons
+}

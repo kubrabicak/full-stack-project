@@ -1,0 +1,44 @@
+<mat-dialog-content>
+  <form #form="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Full Name</mat-label>
+      <input matInput [(ngModel)]="newUser.fullName" name="fullName" required #fullName="ngModel" />
+      <!-- Error message for full name -->
+      @if (fullName.invalid && fullName.touched) {
+        <mat-error>Full Name is required!</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Display Name</mat-label>
+      <input matInput [(ngModel)]="newUser.displayName" name="displayName" required #displayName="ngModel" />
+      <!-- Error message for display name -->
+      @if (displayName.invalid && displayName.touched) {
+        <mat-error>Display Name is required!</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="newUser.email" name="email" required #email="ngModel" />
+      <!-- Error message for email -->
+      @if (email.invalid && email.touched) {
+        <mat-error>Email Name is required!</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Details</mat-label>
+      <input matInput [(ngModel)]="newUser.details" name="details" #details="ngModel" />
+      <!-- Error message for details -->
+      @if (details.invalid && details.touched) {
+        <mat-error>Details Name is required!</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button color="primary" (click)="saveUser()" [disabled]="form.invalid">Save</button>
+</mat-dialog-actions>
