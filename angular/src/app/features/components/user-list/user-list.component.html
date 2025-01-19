@@ -19,14 +19,6 @@
 
 <!-- Table for Users -->
 <table mat-table [dataSource]="usersSignal() | userFilter:searchTerm" class="mat-elevation-z8">
-  <tr>
-    <th mat-header-cell *matHeaderCellDef colspan="6" class="table-header">
-      <button mat-raised-button color="primary" (click)="openAddUserDialog()" class="add-user-btn">
-        <mat-icon>add</mat-icon> Add User
-      </button>
-    </th>
-  </tr>
-
   <ng-container matColumnDef="fullName">
     <th mat-header-cell *matHeaderCellDef> Full Name </th>
     <td mat-cell *matCellDef="let user"> {{ user.fullName | titleCase }} </td>

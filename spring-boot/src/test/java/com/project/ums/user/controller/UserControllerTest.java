@@ -82,37 +82,6 @@ class UserControllerTest {
     }
 
     @Test
-    void shouldGetUserById() {
-        // Mock the service to return the user
-        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
-
-        // Call the controller method
-        ResponseEntity<User> response = userController.getUserById(userId);
-
-        // Assert the response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertEquals(userId, response.getBody().getId());
-
-        verify(userService).getUserById(userId);
-    }
-
-    @Test
-    void shouldReturnNotFoundForNonexistentUser() {
-        // Mock the service to return an empty Optional
-        when(userService.getUserById(userId)).thenReturn(Optional.empty());
-
-        // Call the controller method
-        ResponseEntity<User> response = userController.getUserById(userId);
-
-        // Assert the response
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull(response.getBody());
-
-        verify(userService).getUserById(userId);
-    }
-
-    @Test
     void shouldUpdateUser() {
         // Mock the service to return the updated user
         when(userService.updateUser(eq(userId), any(User.class))).thenReturn(Optional.of(user));

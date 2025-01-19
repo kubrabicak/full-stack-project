@@ -82,33 +82,6 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldReturnUserById_whenUserExists() {
-        // Arrange
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
-
-        // Act
-        Optional<User> foundUser = userService.getUserById(userId);
-
-        // Assert
-        assertTrue(foundUser.isPresent(), "User should be found.");
-        assertEquals(user, foundUser.get());
-        verify(userRepository).findById(userId);
-    }
-
-    @Test
-    void shouldReturnEmpty_whenUserNotFound() {
-        // Arrange
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
-
-        // Act
-        Optional<User> foundUser = userService.getUserById(userId);
-
-        // Assert
-        assertFalse(foundUser.isPresent(), "User should not be found.");
-        verify(userRepository).findById(userId);
-    }
-
-    @Test
     void shouldUpdateUser_whenUserExists() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(true);

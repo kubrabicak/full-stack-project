@@ -30,11 +30,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    // Get User by ID
-    public Optional<User> getUserById(Long id) {
-        return userRepository.findById(id);
-    }
-
     // Update User
     public Optional<User> updateUser(Long id, User user) {
         if (userRepository.existsById(id)) {

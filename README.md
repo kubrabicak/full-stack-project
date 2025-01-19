@@ -202,22 +202,25 @@ The application is structured around modern Angular principles:
 
 ### Backend Setup
 
-1. Clone the backend repository.
+1. Clone the repository.
 2. Follow the [backend setup guide](../backend/README.md) to configure and start the API server.
 3. Ensure the API is running on `http://localhost:8080`.
 
 ### Frontend Setup
 
-1. Clone this repository.
-2. Install dependencies:
+1. Go to angular directory and install dependencies:
 ```bash
       npm install
 ```
-3. Start the development server:
+2. Start the development server:
 ```bash
       ng serve
 ```
-4. Open the app in your browser at http://localhost:4200.
+or
+```bash
+      npm start
+```
+3. Open the app in your browser at http://localhost:4200.
 
 
 ## ⚙️ Development Insights
@@ -236,7 +239,7 @@ The application is structured around modern Angular principles:
     - **Implementation**:
         - A centralized `ErrorHandlingService` was created to handle error notifications.
         - Notifications are dynamically rendered in the DOM with a close button and auto-dismiss functionality (implemented via Angular `Renderer2`).
-        - Notifications can be tested by attempting to add a user with an invalid email.
+        - Notifications can be tested by attempting to add or update a user with an invalid email syntax.
 
 2. **Custom Directive**
     - **Goal**: Highlight rows in the user table when users are added or updated.
@@ -275,23 +278,29 @@ The application is structured around modern Angular principles:
         - Configured with sortable columns and an action column for modifying users.
 
 8. **User Details View**
-    - **Goal**: Allow users to view detailed information in a focused layout.
-    - **Implementation**:
-        - A `MatDialog` component (`UserDetailsComponent`) displays user details in a modal.
-        - Opens when a user entry in the table is clicked.
+   - **Goal**: Allow users to view detailed information in a focused layout.
+   - **Implementation**:
+      - A `MatDialog` component (`UserDetailsComponent`) displays user details in a modal.
+      - Opens when a user entry in the table is clicked.
 
 9. **Data Modification**
-    - **Goal**: Enable the addition, editing, and deletion of users.
-    - **Implementation**:
-        - **Adding Users**: The `UserAddComponent` dialog collects user details via a reactive form and sends the data to the backend.
-        - **Editing Users**: The `UserUpdateComponent` dialog allows modifying existing user details.
-        - **Deleting Users**: Implemented via a delete button in the action column that sends a DELETE request to the backend.
+   - **Goal**: Enable the addition, editing, and deletion of users.
+   - **Implementation**:
+      - **Adding Users**: The `UserAddComponent` dialog collects user details via a reactive form and sends the data to the backend.
+      - **Editing Users**: The `UserUpdateComponent` dialog allows modifying existing user details.
+      - **Deleting Users**: Implemented via a delete button in the action column that sends a DELETE request to the backend.
 
 10. **Search Functionality**
-    - **Goal**: Allow filtering users by name or email for easier navigation.
-    - **Implementation**:
-        - A search bar in `UserListComponent` is bound to a two-way data binding variable (`searchTerm`).
-        - The user list is filtered using the `UserFilterPipe`, ensuring real-time updates.
+  - **Goal**: Allow filtering users by name or email for easier navigation.
+  - **Implementation**:
+    - A search bar in `UserListComponent` is bound to a two-way data binding variable (`searchTerm`).
+    - The user list is filtered using the `UserFilterPipe`, ensuring real-time updates.
+
+11. **Required Fields**
+- **Goal**: In the "Add" and "Update" user forms, required fields must be filled before saving the form.
+- **Implementation**:
+   - The form for adding and updating a user has the following required fields: Full Name, Display Name, and Email.
+   - The `required` attribute and Angular's built-in validation (`ngModel`) ensure that the Display Name field cannot be left empty before the form is saved.
 
 ---
 
@@ -318,18 +327,11 @@ The application is structured around modern Angular principles:
 - **Challenge**: Providing meaningful feedback for various error scenarios.
 - **Solution**: Created an HTTP interceptor to centralize error handling and display notifications using the `ErrorHandlingService`.
 
-### 4. Utilizing Standalone Features
-- **Challenge**: Transitioning to Angular's standalone components and features.
-- **Solution**: Refactored the architecture to use standalone components, pipes, and directives wherever possible.
-
 ---
 
 ## 🔮 Potential Future Improvements
 1. **Pagination**: Implement server-side pagination for the user list.
 2. **Role-based Access Control**: Add user roles to restrict certain operations.
 3. **Unit Testing**: Increase test coverage for services and components.
-4. **Dark Mode**: Add support for light and dark themes.
-5. **Internationalization (i18n)**: Support multiple languages.
-
-   
+4. **Reusable Forms**: The "Add User" and "Update User" forms currently share a lot of similarities in structure and behavior. To improve maintainability, we can refactor both forms into a single shared HTML template.
 

@@ -94,30 +94,31 @@ describe('ErrorHandlingService', () => {
     expect(mockRenderer.removeChild).toHaveBeenCalledWith(document.body, mockNotification);
   }));
 
-  // it('should remove the notification on close button click', () => {
-  //   const mockNotification = {};
-  //   const mockCloseButton = {};
-  //
-  //   // Mock Renderer2 method calls
-  //   mockRenderer.createElement.and.callFake((element) => {
-  //     if (element === 'div') return mockNotification;
-  //     if (element === 'button') return mockCloseButton;
-  //     return {};
-  //   });
-  //
-  //   let clickHandler: (event: any) => (boolean | void) = () => {};
-  //   mockRenderer.listen.and.callFake((element, event, handler) => {
-  //     if (element === mockCloseButton && event === 'click') {
-  //       clickHandler = handler;
-  //     }
-  //     return () => {};
-  //   });
-  //
-  //   service.handleError('Test error message');
-  //
-  //   // Simulate button click
-  //   clickHandler();
-  //
-  //   expect(mockRenderer.removeChild).toHaveBeenCalledWith(document.body, mockNotification);
-  // });
+  it('should remove the notification on close button click', () => {
+    const mockNotification = {};
+    const mockCloseButton = {};
+
+    mockRenderer.createElement.and.callFake((element) => {
+      if (element === 'div') return mockNotification;
+      if (element === 'button') return mockCloseButton;
+      return {};
+    });
+
+    let clickHandler: (event: any) => void = () => {};
+
+    mockRenderer.listen.and.callFake((element, event, handler) => {
+      if (element === mockCloseButton && event === 'click') {
+        clickHandler = handler;
+      }
+      return () => {};
+    });
+
+    service.handleError('Test error message');
+
+    // Simulate the button click
+    clickHandler(new Event('click'));
+
+    // Assert that removeChild has been called to remove the notification
+    expect(mockRenderer.removeChild).toHaveBeenCalledWith(document.body, mockNotification);
+  });
 });
