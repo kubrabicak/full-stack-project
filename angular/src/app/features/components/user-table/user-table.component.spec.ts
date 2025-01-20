@@ -15,8 +15,9 @@ import { UserService } from "../../../core/services/user.service";
 import { UserFilterPipe } from "../../../core/shared/pipe/user-filter.pipe";
 import { HighlightRowDirective } from "../../../core/shared/directive/highlight-row.directive";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { User } from "../../../core/models/user.model";
 
-describe('UserListComponent', () => {
+describe('UserTableComponent', () => {
   let component: UserTableComponent;
   let fixture: ComponentFixture<UserTableComponent>;
   let userService: UserService;
@@ -80,6 +81,28 @@ describe('UserListComponent', () => {
     component.ngOnInit();
     expect(mockUserService.fetchUsers).toHaveBeenCalled();
     expect(component.usersSignal().length).toBeGreaterThan(0);
+  });
+
+  it('should sort users by id in ascending and descending order', () => {
+    const users: User[] = [
+      { id: 3, fullName: 'Alice', displayName: 'alice_doe', email: 'alice@example.com', details: '' },
+      { id: 1, fullName: 'Charlie', displayName: 'charlie_doe', email: 'charlie@example.com', details: '' },
+      { id: 2, fullName: 'Bob', displayName: 'bob_doe', email: 'bob@example.com', details: '' }
+    ];
+
+    // Initialize the users
+    component.usersSignal.set(users);
+
+    // Sort in ascending order
+    component.sortDirection = 'asc';
+    component.sortById();
+    let sortedUsers = component.usersSignal();
+    expect(sortedUsers.map(u => u.id)).toEqual([1, 2, 3]); // IDs should be sorted in ascending order
+
+    // Sort in descending order
+    component.sortById();
+    sortedUsers = component.usersSignal();
+    expect(sortedUsers.map(u => u.id)).toEqual([3, 2, 1]); // IDs should be sorted in descending order
   });
 
   it('should open user details dialog', () => {

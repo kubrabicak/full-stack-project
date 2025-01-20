@@ -3,7 +3,7 @@ import { UserAddComponent } from './user-add.component';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { User } from '../user.model';
+import { User } from "../../../core/models/user.model";
 
 describe('UserAddComponent', () => {
   let component: UserAddComponent;

@@ -54,7 +54,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
     ```
     http://localhost:8080/h2-console
     ```
-    - **JDBC URL**: `jdbc:h2:mem:usermanagement`
+    - **JDBC URL**: `jdbc:h2:mem:ums-db`
     - **Username**: `sa`
     - **Password**: `password`
 
@@ -62,28 +62,79 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 
 ## 🧑‍💻 Example API Usage
 
+### Get All Users
+**GET** `/api/users`
+
+#### Response OK
+
+### Create User
+**POST** `/api/users`
+
+#### Valid Request:
+ ```
+{
+    "fullName": "Harry Potter",
+    "displayName": "Harry P.",
+    "email": "harry@ptter.com",
+    "details": "Harry Potter And The Goblet Of Fire."
+}
+ ```
+#### Response OK
+
+#### Invalid Request (Full name is empty and email is not valid):
+ ```
+{
+    "fullName": "",
+    "displayName": "Harry P.",
+    "email": "harry",
+    "details": "Harry Potter And The Goblet Of Fire."
+}
+ ```
+#### Response:
+ ```
+{
+    "error": "VALIDATION_ERROR",
+    "message": "Full name must not be empty, Email must be valid"
+}
+ ```
+
 ### Update User
 **PUT** `/api/users/{id}`
 
-#### Request:
+#### Valid Request:
  ```
  {
     "fullName": "John Wick Updated",
     "displayName": "John W. Updated",
     "email": "updated.john@wick.com",
+    "details": "Updated description."
+ }
+ ```
+#### Response OK
+
+#### Invalid Request (email is not valid):
+ ```
+{
+    "fullName": "John Wick Updated",
+    "displayName": "John W. Updated",
+    "email": "updated",
     "details": "Updated description."
  }
  ```
 #### Response:
  ```
- {
-    "fullName": "John Wick Updated",
-    "displayName": "John W. Updated",
-    "email": "updated.john@wick.com",
-    "details": "Updated description."
- }
+{
+    "error": "VALIDATION_ERROR",
+    "message": "Email must be valid"
+}
  ```
 
+### Delete User
+**DELETE** `/api/users/{id}`
+
+#### Response OK
+
+---
 
 ## 📦 Packages & Libraries Used
 
@@ -203,7 +254,7 @@ The application is structured around modern Angular principles:
 ### Backend Setup
 
 1. Clone the repository.
-2. Follow the [backend setup guide](../backend/README.md) to configure and start the API server.
+2. Follow the [backend setup guide] to configure and start the API server.
 3. Ensure the API is running on `http://localhost:8080`.
 
 ### Frontend Setup

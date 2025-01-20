@@ -1,5 +1,6 @@
 package com.project.ums.user.exception;
 
+import com.project.ums.user.constants.ErrorConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,28 +12,32 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.project.ums.user.constants.ErrorConstants.*;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Handle general exceptions (fallback for unhandled exceptions)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
+    public ResponseEntity<Map<String, String>> handleGenericException() {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "INTERNAL_SERVER_ERROR");
-        errorResponse.put("message", ex.getMessage());
+        errorResponse.put(ERROR, ErrorConstants.INTERNAL_SERVER_ERROR);
+        errorResponse.put(MESSAGE, ErrorConstants.INTERNAL_SERVER_ERROR_MESSAGE);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 
+    // Handle validation exceptions (method argument not valid)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", "VALIDATION_ERROR");
+        errorResponse.put(ERROR, VALIDATION_ERROR);
 
         // All validation error messages into a single string
         String combinedMessage = ex.getBindingResult().getFieldErrors().stream()
                 .map(FieldError::getDefaultMessage) // Only include the error messages
                 .collect(Collectors.joining(", "));
 
-        errorResponse.put("message", combinedMessage);
+        errorResponse.put(MESSAGE, combinedMessage);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 }

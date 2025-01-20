@@ -122,7 +122,7 @@ class UserControllerTest {
         ResponseEntity<Void> response = userController.deleteUser(userId);
 
         // Assert the response
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
 
         verify(userService).deleteUser(userId);
     }

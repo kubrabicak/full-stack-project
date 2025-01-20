@@ -14,25 +14,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
+import com.project.ums.user.constants.ErrorConstants;
+
 class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
 
     @Test
     void testHandleGenericException() {
-        // Simulate a generic exception
-        Exception ex = new Exception("Test generic exception");
-
         // Call the exception handler directly
-        ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleGenericException(ex);
+        ResponseEntity<Map<String, String>> response = globalExceptionHandler.handleGenericException();
 
         // Validate the response
         assertNotNull(response, "ResponseEntity should not be null");
         assertNotNull(response.getBody(), "ResponseEntity body should not be null");
-
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals("INTERNAL_SERVER_ERROR", response.getBody().get("error"));
-        assertEquals("Test generic exception", response.getBody().get("message"));
+        assertEquals(ErrorConstants.INTERNAL_SERVER_ERROR, response.getBody().get(ErrorConstants.ERROR));
+        assertEquals(ErrorConstants.INTERNAL_SERVER_ERROR_MESSAGE, response.getBody().get(ErrorConstants.MESSAGE));
     }
 
     @Test
