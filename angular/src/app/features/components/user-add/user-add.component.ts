@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { User } from "../user.model";
+import { User } from "../../../core/models/user.model";
 import { MatButton } from "@angular/material/button";
 
 @Component({

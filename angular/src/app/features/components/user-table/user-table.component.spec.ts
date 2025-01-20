@@ -1,5 +1,5 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { UserListComponent } from './user-list.component';
+import { UserTableComponent } from './user-table.component';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -17,8 +17,8 @@ import { HighlightRowDirective } from "../../../core/shared/directive/highlight-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UserListComponent', () => {
-  let component: UserListComponent;
-  let fixture: ComponentFixture<UserListComponent>;
+  let component: UserTableComponent;
+  let fixture: ComponentFixture<UserTableComponent>;
   let userService: UserService;
   let mockDialog: MatDialog;
   let deleteUserSpy: jasmine.Spy;
@@ -55,7 +55,7 @@ describe('UserListComponent', () => {
         HighlightRowDirective,
         MatDialogModule,
         BrowserAnimationsModule,
-        UserListComponent,
+        UserTableComponent,
       ],
       providers: [
         { provide: UserService, useValue: mockUserService },
@@ -65,7 +65,7 @@ describe('UserListComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UserListComponent);
+    fixture = TestBed.createComponent(UserTableComponent);
     component = fixture.componentInstance;
     userService = TestBed.inject(UserService);
     mockDialog = TestBed.inject(MatDialog);

@@ -1,4 +1,4 @@
-import { UserListComponent } from '../features/components/user-list/user-list.component';
+import { UserTableComponent } from '../features/components/user-table/user-table.component';
 import { routes } from "./app.routes";
 
 describe('App Routing', () => {
@@ -10,9 +10,9 @@ describe('App Routing', () => {
     expect(emptyRoute?.pathMatch).toBe('full');
   });
 
-  it('should have a route for /users that loads UserListComponent', () => {
+  it('should have a route for /users that loads UserTableComponent', () => {
     const usersRoute = routes.find(route => route.path === 'users');
     expect(usersRoute).toBeTruthy();
-    expect(usersRoute?.component).toBe(UserListComponent);
+    expect(usersRoute?.component).toBe(UserTableComponent);
   });
 });

@@ -1,4 +1,5 @@
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { HIGHLIGHT_TIMEOUT } from "../../constants/user.constants";
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,6 @@ export class ErrorHandlingService {
       if (document.body.contains(notification)) {
         this.renderer.removeChild(document.body, notification);
       }
-    }, 5000);
+    }, HIGHLIGHT_TIMEOUT);
   }
 }

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { User } from "../../../features/components/user.model";
+import { User } from "../../models/user.model";
 
 @Pipe({
   standalone: true,

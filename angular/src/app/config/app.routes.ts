@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { UserListComponent } from "../features/components/user-list/user-list.component";
+import { UserTableComponent } from "../features/components/user-table/user-table.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/users', pathMatch: 'full' },
-  { path: 'users', component: UserListComponent },
+  { path: 'users', component: UserTableComponent },
 ];
