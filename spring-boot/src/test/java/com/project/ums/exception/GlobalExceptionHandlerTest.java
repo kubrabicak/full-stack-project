@@ -1,4 +1,4 @@
-package com.project.ums.user.exception;
+package com.project.ums.exception;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.core.MethodParameter;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 
-import com.project.ums.user.constants.ErrorConstants;
+import com.project.ums.constants.MessageConstants;
 
 class GlobalExceptionHandlerTest {
 
@@ -29,8 +29,8 @@ class GlobalExceptionHandlerTest {
         assertNotNull(response, "ResponseEntity should not be null");
         assertNotNull(response.getBody(), "ResponseEntity body should not be null");
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-        assertEquals(ErrorConstants.INTERNAL_SERVER_ERROR, response.getBody().get(ErrorConstants.ERROR));
-        assertEquals(ErrorConstants.INTERNAL_SERVER_ERROR_MESSAGE, response.getBody().get(ErrorConstants.MESSAGE));
+        assertEquals(MessageConstants.INTERNAL_SERVER_ERROR, response.getBody().get(MessageConstants.ERROR));
+        assertEquals(MessageConstants.INTERNAL_SERVER_ERROR_MESSAGE, response.getBody().get(MessageConstants.MESSAGE));
     }
 
     @Test

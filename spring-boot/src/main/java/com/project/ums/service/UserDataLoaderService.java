@@ -1,10 +1,9 @@
-package com.project.ums.user.service;
+package com.project.ums.service;
 
-import com.project.ums.user.model.User;
-import com.project.ums.user.repository.UserRepository;
+import com.project.ums.model.User;
+import com.project.ums.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -25,9 +24,9 @@ public class UserDataLoaderService {
 
     public UserDataLoaderService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        loadUsersFromJson();
     }
 
-    @PostConstruct
     public void loadUsersFromJson() {
         Optional.ofNullable(readUsersFromJson())
                 .filter(users -> !users.isEmpty()) // Filter out empty lists

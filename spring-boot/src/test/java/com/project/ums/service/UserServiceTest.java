@@ -1,10 +1,13 @@
-package com.project.ums.user.service;
+package com.project.ums.service;
 
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
-import com.project.ums.user.model.User;
-import com.project.ums.user.repository.UserRepository;
+import com.project.ums.common.ApiResponse;
+import com.project.ums.constants.MessageConstants;
+import com.project.ums.model.User;
+import com.project.ums.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -55,13 +57,12 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
-        User createdUser = userService.createUser(user);
+        ApiResponse<User> response = userService.createUser(user);
 
         // Assert
-        assertNotNull(createdUser, "The created user should not be null.");
-        assertEquals(user.getId(), createdUser.getId());
-        assertEquals(user.getFullName(), createdUser.getFullName());
-        assertEquals(user.getEmail(), createdUser.getEmail());
+        assertNotNull(response, "The response should not be null.");
+        assertEquals(MessageConstants.USER_CREATED, response.getMessage());
+        assertEquals(user, response.getData());
         verify(userRepository).save(any(User.class));
     }
 
@@ -75,9 +76,10 @@ class UserServiceTest {
         List<User> allUsers = userService.getAllUsers();
 
         // Assert
-        assertNotNull(allUsers);
+        assertNotNull(allUsers, "The user list should not be null.");
         assertFalse(allUsers.isEmpty(), "The user list should not be empty.");
         assertEquals(1, allUsers.size());
+        assertEquals(user, allUsers.getFirst());
         verify(userRepository).findAll();
     }
 
@@ -88,25 +90,28 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
-        Optional<User> updatedUser = userService.updateUser(userId, user);
+        ApiResponse<User> response = userService.updateUser(userId, user);
 
         // Assert
-        assertTrue(updatedUser.isPresent(), "Updated user should be present.");
-        assertEquals(user, updatedUser.get());
+        assertNotNull(response, "The response should not be null.");
+        assertEquals(MessageConstants.USER_UPDATED, response.getMessage());
+        assertEquals(user, response.getData());
         verify(userRepository).existsById(userId);
         verify(userRepository).save(any(User.class));
     }
 
     @Test
-    void shouldReturnEmpty_whenUserToUpdateNotFound() {
+    void shouldReturnNotFound_whenUserToUpdateDoesNotExist() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(false);
 
         // Act
-        Optional<User> updatedUser = userService.updateUser(userId, user);
+        ApiResponse<User> response = userService.updateUser(userId, user);
 
         // Assert
-        assertFalse(updatedUser.isPresent(), "Updated user should not be present.");
+        assertNotNull(response, "The response should not be null.");
+        assertEquals(MessageConstants.USER_NOT_FOUND, response.getMessage());
+        assertNull(response.getData(), "The response data should be null.");
         verify(userRepository).existsById(userId);
         verify(userRepository, never()).save(any(User.class));
     }
@@ -117,24 +122,28 @@ class UserServiceTest {
         when(userRepository.existsById(userId)).thenReturn(true);
 
         // Act
-        boolean isDeleted = userService.deleteUser(userId);
+        ApiResponse<Void> response = userService.deleteUser(userId);
 
         // Assert
-        assertTrue(isDeleted, "User should be deleted.");
+        assertNotNull(response, "The response should not be null.");
+        assertEquals(MessageConstants.USER_DELETED, response.getMessage());
+        assertNull(response.getData(), "The response data should be null.");
         verify(userRepository).existsById(userId);
         verify(userRepository).deleteById(userId);
     }
 
     @Test
-    void shouldNotDeleteUser_whenUserDoesNotExist() {
+    void shouldReturnNotFound_whenUserToDeleteDoesNotExist() {
         // Arrange
         when(userRepository.existsById(userId)).thenReturn(false);
 
         // Act
-        boolean isDeleted = userService.deleteUser(userId);
+        ApiResponse<Void> response = userService.deleteUser(userId);
 
         // Assert
-        assertFalse(isDeleted, "User should not be deleted.");
+        assertNotNull(response, "The response should not be null.");
+        assertEquals(MessageConstants.USER_NOT_FOUND, response.getMessage());
+        assertNull(response.getData(), "The response data should be null.");
         verify(userRepository).existsById(userId);
         verify(userRepository, never()).deleteById(userId);
     }

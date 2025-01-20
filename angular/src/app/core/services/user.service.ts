@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import { User } from "../models/user.model";
 
 @Injectable({
@@ -12,18 +12,27 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   fetchUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<{ message: string; data: User[] }>(this.apiUrl).pipe(
+      map((response) => response.data)
+    );
   }
 
   addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+    return this.http
+      .post<{ message: string; data: User }>(this.apiUrl, user)
+      .pipe(map((response) => response.data));
   }
 
   updateUser(user: User): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${user.id}`, user);
+    return this.http
+      .put<{ message: string; data: void }>(`${this.apiUrl}/${user.id}`, user)
+      .pipe(map(() => {}));
   }
 
   deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${userId}`);
+    return this.http
+      .delete<{ message: string; data: void }>(`${this.apiUrl}/${userId}`)
+      .pipe(map(() => {}));
   }
 }
+

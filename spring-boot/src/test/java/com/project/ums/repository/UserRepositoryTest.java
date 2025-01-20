@@ -1,6 +1,6 @@
-package com.project.ums.user.repository;
+package com.project.ums.repository;
 
-import com.project.ums.user.model.User;
+import com.project.ums.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

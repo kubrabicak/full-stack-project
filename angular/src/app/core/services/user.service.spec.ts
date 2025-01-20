@@ -25,19 +25,11 @@ describe('UserService', () => {
   });
 
   afterEach(() => {
-    // Ensure there are no outstanding HTTP requests
     httpMock.verify();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  it('should use the correct API URL for fetchUsers', () => {
-    service.fetchUsers().subscribe();
-
-    const req = httpMock.expectOne('http://localhost:8080/api/users');
-    expect(req.request.url).toBe('http://localhost:8080/api/users');
   });
 
   it('should fetch users', () => {
@@ -48,7 +40,7 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne('http://localhost:8080/api/users');
     expect(req.request.method).toBe('GET');
-    req.flush(mockUsers); // Simulate a successful response
+    req.flush({ message: 'Users fetched successfully.', data: mockUsers }); // Mock the new response structure
   });
 
   it('should add a user', () => {
@@ -59,28 +51,28 @@ describe('UserService', () => {
     const req = httpMock.expectOne('http://localhost:8080/api/users');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(mockUser);
-    req.flush(mockUser); // Simulate a successful response
+    req.flush({ message: 'User added successfully.', data: mockUser }); // Mock the new response structure
   });
 
   it('should update a user', () => {
     service.updateUser(mockUser).subscribe(() => {
-      expect(true).toBeTrue(); // If update succeeds, test passes
+      expect(true).toBeTrue(); // Test passes if update succeeds
     });
 
     const req = httpMock.expectOne(`http://localhost:8080/api/users/${mockUser.id}`);
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(mockUser);
-    req.flush({}); // Simulate a successful response
+    req.flush({ message: 'User updated successfully.', data: null }); // Mock the new response structure
   });
 
   it('should delete a user', () => {
     service.deleteUser(mockUser.id!).subscribe(() => {
-      expect(true).toBeTrue(); // If delete succeeds, test passes
+      expect(true).toBeTrue(); // Test passes if delete succeeds
     });
 
     const req = httpMock.expectOne(`http://localhost:8080/api/users/${mockUser.id}`);
     expect(req.request.method).toBe('DELETE');
-    req.flush({}); // Simulate a successful response
+    req.flush({ message: 'User deleted successfully.', data: null }); // Mock the new response structure
   });
 
   it('should handle fetchUsers error', () => {

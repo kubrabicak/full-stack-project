@@ -1,6 +1,6 @@
-package com.project.ums.user.exception;
+package com.project.ums.exception;
 
-import com.project.ums.user.constants.ErrorConstants;
+import com.project.ums.constants.MessageConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.project.ums.user.constants.ErrorConstants.*;
+import static com.project.ums.constants.MessageConstants.*;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException() {
         Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put(ERROR, ErrorConstants.INTERNAL_SERVER_ERROR);
-        errorResponse.put(MESSAGE, ErrorConstants.INTERNAL_SERVER_ERROR_MESSAGE);
+        errorResponse.put(ERROR, MessageConstants.INTERNAL_SERVER_ERROR);
+        errorResponse.put(MESSAGE, MessageConstants.INTERNAL_SERVER_ERROR_MESSAGE);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 

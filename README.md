@@ -15,9 +15,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 - **Java**: The application is built using Java 21 for development.
 - **Spring Boot**: The application is built using Spring Boot 3.4.1.
 - **Maven**: The application is built using Maven 4.0.0.
-- **Spring Data JPA**: Used for data persistence and database interactions.
 - **H2 Database**: A lightweight, in-memory database for development.
-- **CORS**: Configured to allow cross-origin requests from the frontend.
 
 ---
 
@@ -26,7 +24,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 ### 🛠 **Backend Setup (Spring Boot)**
 
 #### 🧑‍💻 **Prerequisites**
-- **Java 21** (or compatible)
+- **Java 21** 
 - **Maven**
 - **IDE** (e.g., IntelliJ IDEA, Eclipse)
 
@@ -65,7 +63,21 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 ### Get All Users
 **GET** `/api/users`
 
-#### Response OK
+#### Response
+ ```
+ {
+ "message": "Users fetched successfully.",
+    "data": [
+        {
+            "id": 4,
+            "fullName": "John Lennon",
+            "displayName": "John L.",
+            "email": "John@lennon.com",
+            "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum. Dolor."
+        },
+    ]
+}
+ ```
 
 ### Create User
 **POST** `/api/users`
@@ -79,7 +91,20 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
     "details": "Harry Potter And The Goblet Of Fire."
 }
  ```
-#### Response OK
+#### Response:
+
+ ```
+{
+    "message": "User created successfully.",
+    "data": {
+        "id": 17,
+        "fullName": "Harry Potter",
+        "displayName": "Harry H.",
+        "email": "Harry@potter.com",
+        "details": "Harry Potter and the Goblet Of Fire."
+    }
+}
+ ```
 
 #### Invalid Request (Full name is empty and email is not valid):
  ```
@@ -110,29 +135,48 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
     "details": "Updated description."
  }
  ```
-#### Response OK
+#### Response 
+ ```
+ {
+    "message": "User created successfully.",
+    "data": {
+        "id": 17,
+        "fullName": "John Wick Updated",
+        "displayName": "John W. Updated",
+        "email": "updated.john@wick.com",
+        "details": "Updated description."
+    }
+}
+ ```
 
-#### Invalid Request (email is not valid):
+#### Invalid Request (user not found):
  ```
 {
-    "fullName": "John Wick Updated",
-    "displayName": "John W. Updated",
-    "email": "updated",
-    "details": "Updated description."
- }
+    "fullName": "Harry Potter",     
+    "displayName": "Harry H.",
+    "email": "Harry@harry.com",
+    "details": "Harry Potter and the Goblet Of Fire."
+}
  ```
 #### Response:
  ```
 {
-    "error": "VALIDATION_ERROR",
-    "message": "Email must be valid"
+    "message": "User not found.",
+    "data": null
 }
  ```
 
 ### Delete User
 **DELETE** `/api/users/{id}`
 
-#### Response OK
+#### Response 
+
+ ```
+{
+    "message": "User deleted successfully.",
+    "data": null
+}
+ ```
 
 ---
 
@@ -142,7 +186,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 - **Spring Data JPA**: For database interactions and data persistence.
 - **H2 Database**: Lightweight, in-memory database for testing.
 - **Lombok**: Reduces boilerplate code (e.g., getters/setters).
-- **Spring/Jakarta Validation**: For user input validation.
+- **Jakarta Validation**: For user input validation.
 - **Spring Web**: For building and exposing REST APIs.
 - **Hibernate**: For building and exposing REST APIs.
 
@@ -163,10 +207,10 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
     - Used **H2 in-memory database** for development and testing. It eliminates external dependencies and simplifies testing, especially with tools like `@DataJpaTest`.
 
 - **Cookie Management**:
-    - Implemented a feature to calculate the total number of users in the database and store it in a cookie named `RABO_USERS`. This cookie is:
+    - Implemented a `GlobalCookie` class to calculate the total number of users in the database and store it in a cookie named `RABO_USERS`. This cookie is:
         - **Frontend-Accessible**: Set with `HttpOnly=false` to allow Angular to read it.
         - **Temporary**: Expiry set to 1 day (`Max-Age = 24 * 60 * 60`).
-        - Added as part of the response from the get `/users` API endpoint.
+        - Added as part of the response from the `api/users` API endpoints.
 
 - **JSON File**:
     - Used a `users.json` file and placed it under `resources` to load initial data during application startup, ensuring the database is populated automatically without manual intervention.
@@ -183,8 +227,8 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 
 - **Pagination**: Add pagination support for large datasets when retrieving users.
 - **Authentication & Authorization**: Implement JWT-based authentication and authorization.
-- **Error Handling**: Improve error responses by adding error codes for different scenarios.
 - **Data Loading in Production**: Transition to using a solution for data loading in production environments. Instead of loading data at every startup, use a database migration tool such as Liquibase to manage schema changes and initial data population in a controlled and versioned manner. This ensures data integrity and avoids accidental overwrites during application restarts.
+
 ---
 
 ## ⚡ Challenges Faced & Solutions
@@ -211,7 +255,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
         - **Data Parsing**: Using the `Jackson ObjectMapper`, the JSON data is parsed into a list of `User` objects. This approach ensures flexibility and compatibility with different data structures.
         - **Error Handling**: Any exceptions (e.g., missing file, parsing errors) are caught and logged to avoid crashing the application during startup.
         - **Database Persistence**: Successfully parsed user data is saved to the database via `userRepository.saveAll()`.
-        - **Database Repopulation**: `@PostConstruct` Marks the method to be called automatically once the UserDataLoaderService bean is created and all its dependencies are injected.
+        - **Database Repopulation**: `loadUsersFromJson` is called automatically once the UserDataLoaderService bean is created and all its dependencies are injected.
           This ensures the user data is loaded into the database before the application fully starts serving requests.
       
 
@@ -385,4 +429,5 @@ or
 2. **Role-based Access Control**: Add user roles to restrict certain operations.
 3. **Unit Testing**: Increase test coverage for services and components.
 4. **Reusable Forms**: The "Add User" and "Update User" forms currently share a lot of similarities in structure and behavior. To improve maintainability, we can refactor both forms into a single shared HTML template.
+5. **Error Handling**: Improve error responses by using more error codes and messages for different scenarios from the backend.
 

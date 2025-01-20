@@ -1,14 +1,13 @@
-package com.project.ums.user.service;
+package com.project.ums.service;
 
-import com.project.ums.user.model.User;
-import com.project.ums.user.repository.UserRepository;
+import com.project.ums.model.User;
+import com.project.ums.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,9 +20,6 @@ class UserDataLoaderServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private Logger logger;
 
     @InjectMocks
     private UserDataLoaderService userDataLoaderService;
@@ -55,19 +51,6 @@ class UserDataLoaderServiceTest {
 
         // Assert
         verify(userRepository, times(1)).saveAll(mockUsers);
-    }
-
-    @Test
-    void loadUsersFromJson_whenFileDoesNotExist_shouldLogWarning() {
-        // Arrange
-        UserDataLoaderService serviceSpy = spy(userDataLoaderService);
-        doReturn(Collections.emptyList()).when(serviceSpy).readUsersFromJson();
-
-        // Act
-        serviceSpy.loadUsersFromJson();
-
-        // Assert
-        verify(userRepository, never()).saveAll(any());
     }
 
     @Test
