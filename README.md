@@ -33,7 +33,7 @@ Welcome to the **User Management System (UMS)** backend! This project provides a
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/kubrabicak/ums.git
-    cd ums
+    cd spring-boot
     ```
 
 2. **Build the project**:
